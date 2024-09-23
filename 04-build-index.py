@@ -22,7 +22,7 @@ import sys
 import argparse
 import webbrowser
 from elasticsearch import Elasticsearch
-from tika import parser
+from tika import parser as tika_parser
 from getpass import getpass
 
 # Funktion zum Erstellen eines Elasticsearch-Clients mit optionaler Authentifizierung
@@ -85,7 +85,7 @@ def create_or_replace_index(es, index_name):
 def index_doc(es, file_path, index_name, verbose=False):
     # Tika verwenden, um das Dokument zu parsen und Inhalt sowie Metadaten zu extrahieren
     try:
-        parsed = parser.from_file(file_path)
+        parsed = tika_parser.from_file(file_path)
     except Exception as e:
         print(f"Fehler beim Parsen der Datei {file_path}: {e}")
         return
@@ -137,13 +137,13 @@ def index_files_in_directory(es, directory, index_name, verbose=False):
     return processed_files_count  # Gesamtzahl der verarbeiteten Dateien zurückgeben
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Indexiere Dokumente in Elasticsearch.')
-    parser.add_argument('directory', help='Das Verzeichnis mit den zu indizierenden Dokumenten.')
-    parser.add_argument('index_name', nargs='?', help='Name des Elasticsearch-Index. '
-                        'Wenn nicht angegeben, wird der Verzeichnisname verwendet.')
-    parser.add_argument('-v', '--verbose', action='store_true',
-                        help='Aktiviere ausführliche Ausgabe für Debugging.')
-    args = parser.parse_args()
+    arg_parser = argparse.ArgumentParser(description='Indexiere Dokumente in Elasticsearch.')
+    arg_parser.add_argument('directory', help='Das Verzeichnis mit den zu indizierenden Dokumenten.')
+    arg_parser.add_argument('index_name', nargs='?', help='Name des Elasticsearch-Index. '
+                            'Wenn nicht angegeben, wird der Verzeichnisname verwendet.')
+    arg_parser.add_argument('-v', '--verbose', action='store_true',
+                            help='Aktiviere ausführliche Ausgabe für Debugging.')
+    args = arg_parser.parse_args()
 
     # Verzeichnis und Indexname aus den Argumenten erhalten
     doc_directory = args.directory
