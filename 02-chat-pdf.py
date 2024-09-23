@@ -56,25 +56,25 @@ def summarize_text(client, model, summary_prompt):
         exit(1)
 
 # Kommandozeilenargumente für PDF-Pfad, Modell, Sprache, Temperatur, Kontextfenster und verbose
-parser = argparse.ArgumentParser(
+arg_parser = argparse.ArgumentParser(
     description="Interagiere mit einer PDF-Datei mittels eines lokalen Sprachmodells"
 )
-parser.add_argument("pdf_path", type=str, help="Pfad zur PDF-Datei.")
-parser.add_argument("--model", type=str, default="llama3.1",
+arg_parser.add_argument("pdf_path", type=str, help="Pfad zur PDF-Datei.")
+arg_parser.add_argument("--model", type=str, default="llama3.1",
                     help="Das zu verwendende Sprachmodell (Standard: llama3.1)")
-parser.add_argument("--language", type=str, default="deutsch",
+arg_parser.add_argument("--language", type=str, default="deutsch",
                     help="Die Sprache für Antworten und Zusammenfassung (Standard: deutsch)")
-parser.add_argument("--temperature", type=float, default=0.8,
+arg_parser.add_argument("--temperature", type=float, default=0.8,
                     help="Die Temperatur für Modellantworten (Standard: 0.8)")
-parser.add_argument("--context_window", type=int, default=120000,
+arg_parser.add_argument("--context_window", type=int, default=120000,
                     help="Maximale Anzahl von Zeichen aus dem PDF-Inhalt (Standard: 120000)")
-parser.add_argument("--summary_prompt", type=str, default=None,
+arg_parser.add_argument("--summary_prompt", type=str, default=None,
                     help="Der Prompt, der für die Zusammenfassung verwendet wird.")
-parser.add_argument("--system_prompt", type=str, default=None,
+arg_parser.add_argument("--system_prompt", type=str, default=None,
                     help="Der System-Prompt für die Unterhaltung (Standardwert wird verwendet, falls nicht angegeben).")
-parser.add_argument("-v", "--verbose", action="store_true",
+arg_parser.add_argument("-v", "--verbose", action="store_true",
                     help="Aktiviere ausführliche Ausgabe für Debugging")
-args = parser.parse_args()
+args = arg_parser.parse_args()
 
 # Anfangsnachricht ausgeben
 pdf_name = os.path.basename(args.pdf_path)
