@@ -12,7 +12,7 @@ Sprachmodell, die Sprache der Antworten, die Temperatur des Modells und das
 Kontextfenster für die Textverarbeitung. Mit dem Flag `-v` oder `--verbose`
 können zusätzliche Debugging-Informationen ausgegeben werden.
 
-Das Skript verwendet PyMuPDF zum Extrahieren von Text aus PDFs und Ollama als
+Das Skript verwendet Apache Tika zum Extrahieren von Text aus PDFs und Ollama als
 Client für das Sprachmodell. Es wurde eine robuste Fehlerbehandlung
 implementiert, um sicherzustellen, dass der Benutzer bei Fehlern verständliche
 Fehlermeldungen erhält.
@@ -21,18 +21,16 @@ Verwendung:
 ./chat-pdf.py myDoc.pdf --model llama3.1 --language deutsch --temperature 0.8
 """
 
-import fitz  # PyMuPDF
 import argparse
 import os
 import ollama
+from tika import parser
 
 # Funktion zum Extrahieren von Text aus einer PDF-Datei
 def extract_text_from_pdf(pdf_path):
     try:
-        with fitz.open(pdf_path) as doc:
-            text = ""
-            for page in doc:
-                text += page.get_text()
+        parsed = parser.from_file(pdf_path)
+        text = parsed["content"]
         return text
     except Exception as e:
         print(f"Fehler beim Lesen der PDF-Datei '{pdf_path}': {e}")
@@ -40,16 +38,15 @@ def extract_text_from_pdf(pdf_path):
 
 # Funktion zum Entfernen leerer Zeilen aus einem Text
 def remove_blank_lines(text):
-    non_blank_lines = [line for line in text.splitlines() if line.strip()]
-    return "\n".join(non_blank_lines)
+    if text:
+        non_blank_lines = [line for line in text.splitlines() if line.strip()]
+        return "\n".join(non_blank_lines)
+    else:
+        return ""
 
 # Funktion zum Zusammenfassen von Text mit dem angegebenen Modell und der Sprache
-def summarize_text(text, client, model, language):
+def summarize_text(client, model, summary_prompt):
     try:
-        summary_prompt = (
-            f"Summarize the following text in {language}. "
-            f"Two paragraphs will be enough:\n\n{text}\n\nSummary:"
-        )
         response = client.generate(
             prompt=summary_prompt, model=model, options={'temperature': 0}
         )
@@ -71,6 +68,10 @@ parser.add_argument("--temperature", type=float, default=0.8,
                     help="Die Temperatur für Modellantworten (Standard: 0.8)")
 parser.add_argument("--context_window", type=int, default=120000,
                     help="Maximale Anzahl von Zeichen aus dem PDF-Inhalt (Standard: 120000)")
+parser.add_argument("--summary_prompt", type=str, default=None,
+                    help="Der Prompt, der für die Zusammenfassung verwendet wird.")
+parser.add_argument("--system_prompt", type=str, default=None,
+                    help="Der System-Prompt für die Unterhaltung (Standardwert wird verwendet, falls nicht angegeben).")
 parser.add_argument("-v", "--verbose", action="store_true",
                     help="Aktiviere ausführliche Ausgabe für Debugging")
 args = parser.parse_args()
@@ -99,19 +100,39 @@ except Exception as e:
     print(f"Fehler beim Initialisieren des Ollama-Clients: {e}")
     exit(1)
 
+# Zusammenfassungsprompt vorbereiten
+if args.summary_prompt:
+    try:
+        summary_prompt = args.summary_prompt.format(language=args.language, text=pdf_text)
+    except KeyError as e:
+        print(f"Fehler: Platzhalter {e} in summary_prompt nicht gefunden.")
+        exit(1)
+else:
+    summary_prompt = (
+        f"Summarize the following text in {args.language}. "
+        f"Two paragraphs will be enough:\n\n{pdf_text}\n\nSummary:"
+    )
+
 # PDF-Text zusammenfassen
 if args.verbose:
     print("Fasse den Text zusammen...")
-pdf_summary = summarize_text(pdf_text, client, args.model, args.language)
+pdf_summary = summarize_text(client, args.model, summary_prompt)
 
 # Zusammenfassung dem Benutzer anzeigen
 print(f"{pdf_summary}\n")
 
-# Konversationsverlauf mit dem kodierten Inhalt initialisieren
-conversation_history = (
-    f"You are a helpful assistant and inform the user about the following document:\n\n"
-    f"{pdf_text}\n\nNow take the user's question."
-)
+# System-Prompt vorbereiten
+if args.system_prompt:
+    try:
+        conversation_history = args.system_prompt.format(text=pdf_text)
+    except KeyError as e:
+        print(f"Fehler: Platzhalter {e} in system_prompt nicht gefunden.")
+        exit(1)
+else:
+    conversation_history = (
+        f"You are a helpful assistant and inform the user about the following document:\n\n"
+        f"{pdf_text}\n\nNow take the user's question."
+    )
 if args.verbose:
     print("Konversationsverlauf initialisiert.")
 
