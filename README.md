@@ -11,14 +11,14 @@ Die Technische Umsetzung beruht auf folgenden Komponenten:
 - Ein lokales LLM (Default: [llama3.1](https://huggingface.co/meta-llama)) verarbeitet die Informationen und generiert die Antwort.
 
 Verwendete Python-Bibliotheken:
-- ollama: Schnittstelle zu Ollama (Verwaltung lokaler LLMs)
-- tika: Text-Extraktion aus PDF, DOCX, HTML und vielen anderen Dateitypen
-- requests: https-Requests
-- beautifulsoup4: Website Scraping
-- elasticsearch: Schnittstelle zu Elasticsearch (Datenbank und Dokumentenindex)
-- transformers: Laden und Ausführen von Transformer-Modellen
-- torch: Bibliothek für maschinelles Lernen mit GPU-Anbindung
-- sentencepiece: Tokenizer, der von XLM-Roberta verwendet wird
+- **ollama**: Schnittstelle zu Ollama (Verwaltung lokaler LLMs)
+- **tika**: Text-Extraktion aus PDF, DOCX, HTML und vielen anderen Dateitypen
+- **requests**: https-Requests
+- **beautifulsoup4**: Website Scraping
+- **elasticsearch**: Schnittstelle zu Elasticsearch (Datenbank und Dokumentenindex)
+- **transformers**: Laden und Ausführen von Transformer-Modellen
+- **torch**: Bibliothek für maschinelles Lernen mit GPU-Anbindung
+- **sentencepiece**: Tokenizer, der von XLM-Roberta verwendet wird
 
 ## Installation
 
@@ -33,7 +33,7 @@ Python Bibliotheken:
 
 ## Ausführung
 
-Die Skripte sind in der Reihenfolge durchnummeriert, in der sie gestartet werden. Die Skripte 01-03 dienen dem inhaltlichen Einstieg bzw. der Vorbereitung. Hier wird Elasticsearch nicht benötigt.
+Die Skripte sind in der Reihenfolge durchnummeriert, in der sie gestartet werden. Die Skripte 01-03 dienen dem inhaltlichen Einstieg bzw. der Vorbereitung. Elasticsearch und XLM-Roberta werden ab Skript 04 bzw. 05 benötigt.
 
 - `01-chat.py` - Startet einen Chat mit einem lokalen Sprachmodell (Default: llama3.1). Dieses Sprachmodell wird einmalig heruntergeladen und lokal gespeichert, was einige Minuten dauern kann.
 - `02-chat-pdf.py` - Chatten Sie mit einem PDF Dokument Ihrer Wahl, z.B. dem Berlin-Brandenburger Rahmenlehrplan Informatik Sek II ;)
