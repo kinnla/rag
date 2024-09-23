@@ -91,9 +91,13 @@ def main(index_name, system_prompt, welcome_message, user_prefix,
 
     # Falls Benutzername oder Passwort nicht gesetzt sind, nachfragen
     if not es_user:
-        es_user = input("Bitte geben Sie Ihren Elasticsearch-Benutzernamen ein: ")
+        es_user = input(
+            "Bitte geben Sie Ihren Elasticsearch-Benutzernamen ein: "
+        )
     if not es_password:
-        es_password = getpass.getpass("Bitte geben Sie Ihr Elasticsearch-Passwort ein: ")
+        es_password = getpass.getpass(
+            "Bitte geben Sie Ihr Elasticsearch-Passwort ein: "
+        )
 
     es = Elasticsearch(
         hosts=[es_host],
@@ -120,7 +124,9 @@ def main(index_name, system_prompt, welcome_message, user_prefix,
         conversation_history += user_prefix + user_question + "\n\n"
 
         # Embedding für die Benutzerfrage erstellen
-        user_embedding = create_embedding_for_question(model, tokenizer, user_question)
+        user_embedding = create_embedding_for_question(
+            model, tokenizer, user_question
+        )
 
         if verbose:
             print("Benutzer-Embedding erstellt.")
@@ -133,7 +139,10 @@ def main(index_name, system_prompt, welcome_message, user_prefix,
                         "match_all": {}
                     },
                     "script": {
-                        "source": "cosineSimilarity(params.query_vector, 'embedding_vector') + 1.0",
+                        "source": (
+                            "cosineSimilarity(params.query_vector, "
+                            "'embedding_vector') + 1.0"
+                        ),
                         "params": {
                             "query_vector": user_embedding
                         }
@@ -163,17 +172,18 @@ def main(index_name, system_prompt, welcome_message, user_prefix,
             print("Keine Dokumente gefunden.")
             continue
 
-        # Prompt für das Modell erstellen
+        # Prompt für das Modell erstellen (Prompt bleibt auf Englisch)
         prompt = conversation_history
-        prompt += ("Beantworte die Frage basierend auf den folgenden "
-                   "Informationen:\n\n")
+        prompt += "Answer the question based on the following information:\n\n"
 
         for i, doc in enumerate(documents):
-            prompt += f"Dokument {i+1}:\n{doc}\n\n"
+            prompt += f"Document {i+1}:\n{doc}\n\n"
 
-        prompt += f"Hier ist die Frage erneut: {user_question}\n\n"
-        prompt += ("Beantworte die Frage natürlich in der Sprache des Nutzers. "
-                   "Wenn keine Frage gestellt wurde, führe das Gespräch fort.")
+        prompt += f"Here is the question again: {user_question}\n\n"
+        prompt += (
+            "Answer the question naturally, in the user's language. "
+            "If no question is asked, just keep the conversation going."
+        )
 
         if verbose:
             print("Prompt für das Modell erstellt.")
@@ -204,31 +214,54 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Elasticsearch und Ollama RAG Chat Skript"
     )
-    parser.add_argument("index_name", type=str,
-                        help="Name des Elasticsearch-Index")
-    parser.add_argument("--system-prompt", type=str,
-                        default="Du bist ein hilfreicher Assistent.",
-                        help="System-Prompt für das Modell.")
-    parser.add_argument("--welcome-message", type=str,
-                        default="Willkommen beim RAG Chat",
-                        help="Willkommensnachricht für den Nutzer.")
-    parser.add_argument("--user-prefix", type=str,
-                        default="Du sagst: ",
-                        help="Prefix für Benutzereingaben.")
-    parser.add_argument("--bot-prefix", type=str,
-                        default="Antwort: ",
-                        help="Prefix für Bot-Antworten.")
-    parser.add_argument("--doc-limit", type=int,
-                        default=5,
-                        help="Anzahl der Dokumente im Prompt (Standard: 5)")
-    parser.add_argument('-v', '--verbose', action='store_true',
-                        help='Aktiviert Debugging-Informationen.')
+    parser.add_argument(
+        "index_name",
+        type=str,
+        help="Name des Elasticsearch-Index"
+    )
+    parser.add_argument(
+        "--system-prompt",
+        type=str,
+        default="You are a helpful assistant.",
+        help="System-Prompt für das Modell."
+    )
+    parser.add_argument(
+        "--welcome-message",
+        type=str,
+        default="Willkommen beim RAG Chat",
+        help="Willkommensnachricht für den Nutzer."
+    )
+    parser.add_argument(
+        "--user-prefix",
+        type=str,
+        default="Du sagst: ",
+        help="Prefix für Benutzereingaben."
+    )
+    parser.add_argument(
+        "--bot-prefix",
+        type=str,
+        default="Antwort: ",
+        help="Prefix für Bot-Antworten."
+    )
+    parser.add_argument(
+        "--doc-limit",
+        type=int,
+        default=5,
+        help="Anzahl der Dokumente im Prompt (Standard: 5)"
+    )
+    parser.add_argument(
+        '-v', '--verbose',
+        action='store_true',
+        help='Aktiviert Debugging-Informationen.'
+    )
 
     args = parser.parse_args()
-    main(args.index_name,
-         system_prompt=args.system_prompt,
-         welcome_message=args.welcome_message,
-         user_prefix=args.user_prefix,
-         bot_prefix=args.bot_prefix,
-         doc_limit=args.doc_limit,
-         verbose=args.verbose)
+    main(
+        args.index_name,
+        system_prompt=args.system_prompt,
+        welcome_message=args.welcome_message,
+        user_prefix=args.user_prefix,
+        bot_prefix=args.bot_prefix,
+        doc_limit=args.doc_limit,
+        verbose=args.verbose
+    )

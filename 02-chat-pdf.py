@@ -47,8 +47,8 @@ def remove_blank_lines(text):
 def summarize_text(text, client, model, language):
     try:
         summary_prompt = (
-            f"Fasse den folgenden Text in {language} zusammen. "
-            f"Zwei Absätze reichen aus:\n\n{text}\n\nZusammenfassung:"
+            f"Summarize the following text in {language}. "
+            f"Two paragraphs will be enough:\n\n{text}\n\nSummary:"
         )
         response = client.generate(
             prompt=summary_prompt, model=model, options={'temperature': 0}
@@ -109,8 +109,8 @@ print(f"{pdf_summary}\n")
 
 # Konversationsverlauf mit dem kodierten Inhalt initialisieren
 conversation_history = (
-    f"Du bist ein hilfreicher Assistent und informierst den Benutzer über das "
-    f"folgende Dokument:\n\n{pdf_text}\n\nBitte beantworte nun die Fragen des Benutzers."
+    f"You are a helpful assistant and inform the user about the following document:\n\n"
+    f"{pdf_text}\n\nNow take the user's question."
 )
 if args.verbose:
     print("Konversationsverlauf initialisiert.")
@@ -134,9 +134,9 @@ while True:
     prompt = f"""
 {conversation_history}
 
-Benutzer: {user_query}
+User: {user_query}
 
-Assistent:
+Assistant:
 """
 
     # Antwort generieren
@@ -155,4 +155,4 @@ Assistent:
     print(f"\n{args.model}: {assistant_response}\n")
 
     # Konversationsverlauf aktualisieren
-    conversation_history += f"\nBenutzer: {user_query}\n\nAssistent: {assistant_response}\n"
+    conversation_history += f"\nUser: {user_query}\n\nAssistant: {assistant_response}\n"
