@@ -7,7 +7,7 @@ Mit dieser Serie von Python Scripten wird Schritt für Schritt ein einfaches Ret
 
 Die Technische Umsetzung beruht auf folgenden Komponenten:
 - Für die Indizierung der Dokumente und als Vektor-Datenbank wird [Elasticsearch](https://www.elastic.co) verwendet.
-- Mit dem Embedding-Modell [XLM-Roberta](https://huggingface.co/transformers/model_doc/xlmroberta.html) werden die Dokumente und die Anfrage semantisch indiziert.
+- Mit dem Embedding-Modell [XLM-Roberta](https://huggingface.co/FacebookAI/xlm-roberta-base) werden die Dokumente und die Anfrage semantisch indiziert.
 - Ein lokales LLM (Default: [llama3.1](https://huggingface.co/meta-llama)) verarbeitet die Informationen und generiert die Antwort.
 
 Verwendete Python-Bibliotheken:
@@ -24,7 +24,7 @@ Verwendete Python-Bibliotheken:
 
 Externe Komponenten:
 1. Installieren Sie [Ollama](https://ollama.com)
-2. Installieren Sie [Elasticsearch](https://www.elastic.co)
+2. Installieren Sie [Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html)
 
 Python Bibliotheken:
 1. Erstellen Sie ein virtuelles Environment (venv): `python3 -m venv venv`
