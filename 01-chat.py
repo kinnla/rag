@@ -96,7 +96,7 @@ Assistant:
         print(assistant_response)
 
     # Antwort ausgeben
-    print(f"\n{args.model}: {'\n'.join(non_blank_lines)}\n")
+    print(f"\n{args.model}: {'\\n'.join(non_blank_lines)}\n")
 
     # Konversationshistorie aktualisieren
     conversation_history += f"User: {user_query}\n\nAssistant: {assistant_response}\n\n"
