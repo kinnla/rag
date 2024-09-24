@@ -172,9 +172,9 @@ def main():
     )
     parser.add_argument(
         "-m", "--max_files",
-        help=("Maximale Anzahl der herunterzuladenden Dateien (Standard: 100)"),
+        help=("Maximale Anzahl der herunterzuladenden Dateien (Standard: 10)"),
         type=int,
-        default=100
+        default=10
     )
     parser.add_argument(
         "-v", "--verbose",
