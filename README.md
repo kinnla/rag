@@ -22,13 +22,8 @@ Verwendete Python-Bibliotheken:
 
 ## Installation
 
-Externe Komponenten:
 1. Installieren Sie [Ollama](https://ollama.com)
 2. Installieren Sie [Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html)
-
-Python Bibliotheken:
-1. Erstellen Sie ein virtuelles Environment (venv): `python3 -m venv venv`
-2. Aktivieren Sie das venv: `source venv/bin/activate` (Mac & Linux) bzw. `venv\Scripts\activate` (Windows).
 3. Installieren die die Bibliotheken: `pip install -r requirements.txt`
 
 ## Ausführung
