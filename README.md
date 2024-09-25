@@ -31,7 +31,7 @@ Verwendete Python-Bibliotheken:
 Die Skripte sind in der Reihenfolge durchnummeriert, in der sie gestartet werden. Die Skripte 01-03 dienen dem inhaltlichen Einstieg bzw. der Vorbereitung. Elasticsearch und XLM-Roberta werden ab Skript 04 bzw. 05 benötigt.
 
 - `01-chat.py` - Startet einen Chat mit einem lokalen Sprachmodell (Default: llama3.1). Dieses Sprachmodell wird einmalig heruntergeladen und lokal gespeichert, was einige Minuten dauern kann.
-- `02-chat-pdf.py` - Chatten Sie mit einem PDF Dokument Ihrer Wahl, z.B. dem Berlin-Brandenburger Rahmenlehrplan Informatik Sek II ;)
+- `02-chat-pdf.py` - Chatten Sie mit einem PDF Dokument Ihrer Wahl
 - `03-scrape-website.py` - Dieses Skript kopiert Dokumente von einer Website in ein lokales Verzeichnis (Web-Scraping).
 - `04-build-index.py` - Dokumente (PDF, DOCX, HTML etc.) aus einem lokalen Verzeichnis werden in Elasticsearch gespeichert und indiziert.
 - `05-create_chunks.py` - Die Dokumente werden in Blöcke fester Länge geschnitten und in einem eigenen Index abgelegt.
