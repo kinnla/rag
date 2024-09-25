@@ -1,3 +1,4 @@
+openai
 anyio==4.6.0
 beautifulsoup4==4.12.3
 certifi==2024.8.30
