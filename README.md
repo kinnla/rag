@@ -43,13 +43,24 @@ Die Skripte sind in der Reihenfolge durchnummeriert, in der sie gestartet werden
 - Arbeiten Sie mit den Fehlermeldungen, um zu identifizieren, in welcher Komponente der Fehler auftritt.
 - Für zusätzliche Debugging-Informationen starten Sie das Skript mit dem Parameter `--verbose`.
 
-## Modifikationen
+----
 
-Modifizieren Sie die Skripte, um die Technologie kennen zu lernen.
+## Beobachtungen
 
-1. Laden Sie ein anderes [lokales Sprachmodell](https://ollama.com/library).
-2. Verändern Sie den System-Prompt.
-3. Verändern Sie die Temperatur des Sprachmodells.
-4. Experimentieren Sie mit unterschiedlichen Dokumentenindizes.
+- Für Anfragen zu Personen gibt es schlechte Treffer. Vermutung: die ca. 3-5 Tokens, die einem Namen entsprechen, gehen in der Summe der 512 Tokens unter, aus denen ein Block besteht, unter.
+- Ein Scraping der PzA Website besteht aus ca. 300 Dokumenten, daraus ergeben sich ca. 1300 Blöcke a 512 Tokens. Darunter auch viele für unseren Anwendungsfall irrelevante Informationen.
+- Llama3.1 verarbeitet Anweisungen auf Englisch deutlich besser. Wir müssen das Modell auf Englisch instruieren, dass es Deutsche Dokumente verarbeitet und auf Deutsch antworten soll.
+
+## Vorschläge zur Weiterentwicklung
+
+- Das Anwendungszenario nachschärfen: was sind typische Anfragen und darauf erwartete Antworten?
+- Entwurf eines Benchmarks: Katalog aus vorbildlichen Antworten
+- Für Expert:innen: welche alternative Ansätze gibt es zur Lösung des Problems?
+- Die Datenbasis vergrößern
+- Experimentieren, wie und welche Dokumente der Website sich sinnvoll in die Datenbasis einbinden lassen.
+- Optimierung von Parametern: Temperatur, Blockgröße, Anzahl der Dokumente
+- Optimierung der Prompts
+- Einsatz anderer Embedding-Modelle, die auf deutschem Vokabular trainiert sind.
+- Eigennamen herausfiltern und Dokumente per Volltextsuche in Elasticsearch suchen lassen.
 
 
