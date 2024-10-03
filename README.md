@@ -63,4 +63,37 @@ Die Skripte sind in der Reihenfolge durchnummeriert, in der sie gestartet werden
 - Einsatz anderer Embedding-Modelle, die auf deutschem Vokabular trainiert sind.
 - Eigennamen herausfiltern und Dokumente per Volltextsuche in Elasticsearch suchen lassen.
 
+## Ergebnissicherung Workshop
+
+Alternative Ansätze zur Realisierung:
+- zu Elasticsearch: llama-index (Python library) -> muss progammiert werden
+- zu ollama: Api-key z.B. von KISSKI.de -> im Leistungskatalog kostenlos mit Ticket anfragen -> Skript 01-chat-ai.py mit API key (manuell 'c' anhängen) --> hier könnt ihr bei academic cloud direkt gucken
+
+Weitere Ideen für Workshop:
+- das ganze Set-Up auf einem Raspberry Pi laufen lassen mit kleinem Monitor
+
+Gruppe Prompts / Use Cases:
+- Fokus auf Nutzer*innen Prompts
+- Aufteilung in neue Mitarbeiter*innen und etablierte Mitarbeitende - unterschiedliche Fragestellungen sind relevant
+- + generelle Unternehmensabläufe und -prozesse
+ 
+Gruppe Prompts / technisch: 
+- Wenn Infos nicht auffindbar sind: Speicherung mit den gestellten Anfragen (+ Hinweis: Ist es ok, wenn deine Anfrage gespeichert wird) und Abfrage von gefundenen Lösungen außerhalb des RAG -> Sammlung zu ungelösten Fragen in einer Datei und Einspeisung weiterer Daten in die Wissensdatenbank
+
+Gruppe Cross Referencing:
+- mit Script Informationen aus Referenzen scrapen und dann in die Dokumente wieder einfügen
+- bei Politik zum Anfassen ggf. relevant, wenn in Dokumenten rechtliche Aspekte wie z.B. Arbeitsrecht referenziert wird
+
+Gruppe eigene Uniwebsite:
+- Ausprobieren dort mit dem Prototypen: hier wurden alle Links auf der Website automatisch auch mitgescraped
+
+Gruppe englisch vs. deutsch:
+- Ergebnis: auf englisch funktioniert es deutlich besser als auf deutsch 
+
+
+  
+
+
+
+
 
